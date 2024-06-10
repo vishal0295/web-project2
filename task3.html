@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            font-family: "Rubik", sans-serif;
+        }
+
+        :root {
+            --text-color: #fff;
+            --color: yellow;
+            --bg-color: #2d2d2e;
+            --first: #fff;
+            --second: #000;
+            --mob-color: #363636;
+            --box-bg: #333;
+            --clr-bg: #3e3e3e;
+            --place-clr: #afafaf;
+        }
+
+        body.dark-mode {
+            --text-color: #222;
+            --bg-color: #f2f2f2;
+            --first: #222;
+            --second: #fff;
+            --mob-color: #eae6e6;
+            --box-bg: #e5e5e5;
+            --clr-bg: #e5e5e5;
+            --place-clr: #6b6b6b;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: var(--mob-color);
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            color: var(--first);
+            margin-bottom: 0.5rem;
+        }
+
+        form input {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 16px;
+            color: var(--first);
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            background: var(--clr-bg);
+            border: 2px solid var(--color);
+        }
+
+        form .submit {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--color);
+            color: var(--color);
+            background-color: transparent;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        form .submit:hover {
+            box-shadow: 0 0 1rem var(--color);
+        }
+
+        #error-message {
+            font-weight: bold;
+            color: red;
+        }
+
+        @media (max-height: 700px) {
+            form {
+                padding: 1rem;
+            }
+
+            form input, form .submit {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form id="Form" class="form">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="number">Number</label>
+            <input type="tel" id="number" required>
+        </div>
+        <input type="submit" class="submit" value="Submit">
+        <p id="error-message"></p>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const form = document.getElementById('Form');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const numberInput = document.getElementById('number');
+            const errorMessage = document.getElementById('error-message');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission initially
+                errorMessage.textContent = '';
+                nameInput.style.backgroundColor = '';
+                emailInput.style.backgroundColor = '';
+                passwordInput.style.backgroundColor = '';
+                numberInput.style.backgroundColor = '';
+
+                let valid = true;
+                let errorMessages = [];
+
+                if (nameInput.value.trim() === '') {
+                    errorMessages.push('Name is required.');
+                    nameInput.style.backgroundColor = 'red';
+                    valid = false;
+                }
+
+                const emailPattern = /^[a-zA-Z0-9._-]+@gmail\.com$/;
+                if (!emailPattern.test(emailInput.value)) {
+                    errorMessages.push('Please enter a valid email address with @gmail.com domain.');
+                    emailInput.style.backgroundColor = 'red';
+                    valid = false;
+                }
+
+                if (passwordInput.value.length < 6) {
+                    errorMessages.push('Password must be at least 6 characters long.');
+                    passwordInput.style.backgroundColor = 'red';
+                    valid = false;
+                }
+
+                const numberPattern = /^\d{10}$/;
+                if (!numberPattern.test(numberInput.value)) {
+                    errorMessages.push('Number must be exactly 10 digits.');
+                    numberInput.style.backgroundColor = 'red';
+                    valid = false;
+                }
+
+                if (!valid) {
+                    errorMessage.textContent = errorMessages.join(' ');
+                } else {
+                    errorMessage.textContent = 'All Correct Input';
+                    errorMessage.style.color = '#4ff8ed';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
